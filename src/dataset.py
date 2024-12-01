@@ -34,7 +34,7 @@ class Dataset:
      
         if dataset == "Kaggle":
             # Load Kaggle dataset
-            new_base_dir = pathlib.Path("../data/cats_vs_dogs_small")
+            new_base_dir = pathlib.Path("./data/cats_vs_dogs_small")
             self.train_dataset = tf.keras.utils.image_dataset_from_directory(
                 new_base_dir / "train",
                 image_size = (180, 180),
@@ -55,7 +55,7 @@ class Dataset:
             
         if dataset == "Oxford-IIIT":
             # Load Oxford-IIIT dataset
-            data_path = pathlib.Path("../data/pets/oxford-IIIT_pets.npz")
+            data_path = pathlib.Path("./data/pets/oxford-IIIT_pets.npz")
 
             def load_arrays_with_progress(file_path):
                 pets_data = np.load(file_path)
