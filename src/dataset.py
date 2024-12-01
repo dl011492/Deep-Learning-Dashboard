@@ -55,7 +55,7 @@ class Dataset:
             
         if dataset == "Oxford-IIIT":
             # Load Oxford-IIIT dataset
-            data_path = pathlib.Path(r"D:\languages\python3.9\data\pets\oxford-IIIT_pets.npz")
+            data_path = pathlib.Path("../data/pets/oxford-IIIT_pets.npz")
 
             def load_arrays_with_progress(file_path):
                 pets_data = np.load(file_path)
