@@ -46,7 +46,7 @@ This simple GUI is created using Tkinter. It works fine with the following minim
    gzip -d train.zip validation.zip test.zip 
 4. Run the script:
    ```bash
-   $ python dld.py 
+   python dld.py 
 
 ## Credits
 Most of the deep learning models and how to obtain the Kaggle and Oxford-IIIT datasets were taken from
