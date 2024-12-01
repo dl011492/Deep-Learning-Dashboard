@@ -3,9 +3,9 @@
 **Deep Learning Dashboard** is a Python and TensorFlow project that allows one to select between standard machine learning
 datasets like: MNIST, Fashion MNIST, Kaggle cats and dogs and Oxford-IIIT pets.
 It is designed to easily display samples of selected datasets, select a specific neural network model (MLP 512, CNN Small,
-CNN Medium with data augmentation, VGG16-DA, mini Xception, Segmenattion, sentiment analysis) monitor training and evaluate
+CNN Medium with data augmentation, VGG16-DA, mini Xception, Segmentation, sentiment analysis) monitor training and evaluate
 the results. The scripts are by no means complete. Feel free to try to finish them, implement new models and improve it.
-**Warning**: the datasets in this reprository are compresed but still large (1.2 GB). Be aawre of this when coloning or
+**Warning**: the datasets in this repository are compressed but still large (1.2 GB). Be aware of this when cloning or
 downloading files.
 
 ![Deep learning dashboard example 1](https://github.com/dl011492/Deep-Learning-Dashboard/blob/main/figures/dld_v02.png)
@@ -21,10 +21,10 @@ loading and pre-processing of this dataset, the script nows directly access a de
 
 ---
 ## Requirements
-This simple GUI is created using Tkinter. It works fine with the following minnimum requirements: 
-- ## Python 3.9
-- ## TensorFlow 2.10 (to be able to use CUDA 11.2 cuDNN 8.1 on Windows 10)
-- ## The script also works with newer TensorFlow versions under Linux
+This simple GUI is created using Tkinter. It works fine with the following minimum requirements: 
+- ** Python 3.9
+- ** TensorFlow 2.10 (to be able to use CUDA 11.2 cuDNN 8.1 on Windows 10)
+- ** The script also works with newer TensorFlow versions under Linux
 
 ## Features
 
@@ -38,11 +38,11 @@ This simple GUI is created using Tkinter. It works fine with the following minni
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-username>/Deep-Learning-Dashboard.git
+   git clone https://github.com/dl011492/Deep-Learning-Dashboard.git
    cd Deep-Learning-Dashboard
 2. Unzip the Kaggle files 
    cd /data/cats_vs_dogs_small
-   gzunzip train.zip, validation.zip, test.zip 
+   gzip -d train.zip validation.zip test.zip 
 3. Run the script
    $ python dld.py 
 
@@ -51,5 +51,5 @@ Most of the deep learning models and how to obtain the Kaggle and Oxford-IIIT da
 the excellent book:
 Deep Learning with Python, 2nd Ed. Francois Chollet, Manning Publications Co. 2021.
 https:// www.manning.com/books/deep-learning-with-python-second-edition. 
-Jupyter notebooks of the book examples ara vailable on GitHub at
+Jupyter notebooks of the book examples are available on GitHub at
 https://github.com/fchollet/deep-learning-with-pythonnotebooks.
