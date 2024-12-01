@@ -1,11 +1,12 @@
 # Deep Learning Dashboard
 
 **Deep Learning Dashboard** is a Python and TensorFlow project that allows one to select between standard machine learning
-datasets like: MNIST, Fashion MNIST, Kaggle cats and dogs and Oxford-IIIT pets.
+datasets like: MNIST, Fashion MNIST, Kaggle cats and dogs and Oxford-IIIT pets.  
 It is designed to easily display samples of selected datasets, select a specific neural network model (MLP 512, CNN Small,
-CNN Medium with data augmentation, VGG16-DA, mini Xception, Segmentation, sentiment analysis) monitor training and evaluate
-the results. The scripts are by no means complete. Feel free to try to finish them, implement new models and improve it.
-**Warning**: the datasets in this repository are compressed but still large (1.2 GB). Be aware of this when cloning or
+CNN Medium with data augmentation, VGG16-DA, mini Xception, Segmentation, sentiment analysis) monitor their training and
+evaluate the results. The scripts are by no means complete. Feel free to try to finish them, implement new models and
+improve them.  
+**Warning** The datasets in this repository are compressed, but still large (1.2 GB). Be aware of this when cloning or
 downloading files.
 
 ![Deep learning dashboard example 1](https://github.com/dl011492/Deep-Learning-Dashboard/blob/main/figures/dld_v02.png)
@@ -13,18 +14,19 @@ downloading files.
 ![Deep learning dashboard example 2](https://github.com/dl011492/Deep-Learning-Dashboard/blob/main/figures/dld_v02_b.png)
 
 ## Datasets
-MNIST and Fashion MNIST are already part of TensorFlow and one should not have any problems using these.
+MNIST and Fashion MNIST are already part of TensorFlow Keras and one should not have any problems using them.
 [Kaggle](https://www.kaggle.com/datasets/tongpython/cat-and-dog) is not the original dataset but a smaller dataset organized
 and made smaller according to the example described in Chollet's book, p. 212.
-For the [Oxford-IIIT pets](www.robots.ox.ac.uk/~vgg/data/pets/) dataset, I used the example on p. 240, but trying to speed
-loading and pre-processing of this dataset, the script nows directly access a dedicated *.npz file located in /data/pets.
+For the [Oxford-IIIT pets](www.robots.ox.ac.uk/~vgg/data/pets/) dataset, I used the book's example on p. 240. A minor speedup
+in loading and pre-processing is achieved by accessing the provided ./data/pets/oxford-IIIT_pets.npz file directly.
 
 ---
 ## Requirements
 This simple GUI is created using Tkinter. It works fine with the following minimum requirements: 
 - Python 3.9
 - TensorFlow 2.10 (to be able to use CUDA 11.2 cuDNN 8.1 on Windows 10)
-- The script should also work with newer TensorFlow versions under Linux
+- The script should also work on newer TensorFlow versions under Linux
+- At least 1.1 GB of free space
 
 ## Features
 
