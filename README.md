@@ -42,7 +42,7 @@ This simple GUI is created using Tkinter. It works fine with the following minim
    cd Deep-Learning-Dashboard
 2. Unzip the Kaggle files:
    ```bash
-   cd /data/cats_vs_dogs_small
+   cd data/cats_vs_dogs_small
    gzip -d train.zip validation.zip test.zip 
 4. Run the script:
    ```bash
