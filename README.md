@@ -3,9 +3,9 @@
 **Deep Learning Dashboard** is a Python and TensorFlow project that allows one to select between standard machine learning
 datasets like: MNIST, Fashion MNIST, Kaggle cats and dogs and Oxford-IIIT pets.  
 It is designed to easily display samples of selected datasets, select a specific neural network model (MLP 512, CNN Small,
-CNN Medium with data augmentation, VGG16-DA, mini Xception, Segmentation, sentiment analysis) monitor their training and
-evaluate the results. The scripts are by no means complete. Feel free to try to finish them, implement new models and
-improve them.  
+CNN Medium with data augmentation, VGG16-DA, mini Xception, Segmentation, sentiment analysis), monitor their training and
+evaluate the results.  
+The scripts are by no means complete. Feel free to try to finish them, implement new models and improve them.  
 **Warning** The datasets in this repository are compressed, but still large (1.2 GB). Be aware of this when cloning or
 downloading files.
 
@@ -32,7 +32,7 @@ This simple GUI is created using Tkinter. It works fine with the following minim
 
 - **Model Training Tracking**: Monitor training progress with dynamic loss and accuracy diagrams.
 - **Data Visualization**: Analyze datasets and outputs using built-in graphing tools.
-- **Cross-Platform Compatibility**: Runs seamlessly on both Windows and Linux systems.
+- **Cross-Platform Compatibility**: Runs on both Windows and Linux systems.
 
 ---
 
@@ -45,7 +45,7 @@ This simple GUI is created using Tkinter. It works fine with the following minim
 2. Unzip the Kaggle files:
    ```bash
    cd data/cats_vs_dogs_small
-   gzip -d train.zip validation.zip test.zip 
+   gunzip -xf train.zip validation.zip test.zip 
 4. Run the script:
    ```bash
    python dld.py 
