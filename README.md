@@ -54,8 +54,11 @@ This simple GUI is created using Tkinter. It works fine with the following minim
    rm *.zip 
 4. Run the script:
    ```bash
-   cd ..
+   cd ../..
    python dld.py 
+
+Eventually, you can rename the directory Deep-Learning-Dashboard to <name>_v01. In this way, the
+script will reflect your code version number in the Tkinter window.
 
 ## Credits
 Most of the deep learning models and how to obtain the Kaggle and Oxford-IIIT datasets were taken from
