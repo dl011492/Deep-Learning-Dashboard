@@ -16,7 +16,7 @@ downloading files.
 ## Datasets
 MNIST and Fashion MNIST are already part of TensorFlow Keras and one should not have any problems using them.
 [Kaggle](https://www.kaggle.com/datasets/tongpython/cat-and-dog) is not the original dataset but a smaller dataset organized
-and made smaller according to the example described in Chollet's book, p. 212.
+and made smaller according to the example described in Chollet's book, p. 212.  
 For the [Oxford-IIIT pets](www.robots.ox.ac.uk/~vgg/data/pets/) dataset, I used the book's example on p. 240. A minor speedup
 in loading and pre-processing is achieved by accessing the provided ./data/pets/oxford-IIIT_pets.npz file directly.
 
@@ -54,5 +54,6 @@ This simple GUI is created using Tkinter. It works fine with the following minim
 Most of the deep learning models and how to obtain the Kaggle and Oxford-IIIT datasets were taken from
 the excellent book:
 [Deep Learning with Python, 2nd Ed. F. Chollet, Manning Publicatiiosn Co. 2021](https://www.manning.com/books/deep-learning-with-python-second-edition)
-. Jupyter notebooks of the book examples are available on GitHub at
+.  
+Jupyter notebooks of the book examples are available on GitHub at
 [github.com/fchollet/deep-learning-with-pythonnotebooks.](https://github.com/fchollet/deep-learning-with-python-notebooks)
