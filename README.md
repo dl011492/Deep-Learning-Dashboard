@@ -22,9 +22,9 @@ loading and pre-processing of this dataset, the script nows directly access a de
 ---
 ## Requirements
 This simple GUI is created using Tkinter. It works fine with the following minimum requirements: 
-- ** Python 3.9
-- ** TensorFlow 2.10 (to be able to use CUDA 11.2 cuDNN 8.1 on Windows 10)
-- ** The script also works with newer TensorFlow versions under Linux
+- Python 3.9
+- TensorFlow 2.10 (to be able to use CUDA 11.2 cuDNN 8.1 on Windows 10)
+- The script should also work with newer TensorFlow versions under Linux
 
 ## Features
 
@@ -40,10 +40,12 @@ This simple GUI is created using Tkinter. It works fine with the following minim
    ```bash
    git clone https://github.com/dl011492/Deep-Learning-Dashboard.git
    cd Deep-Learning-Dashboard
-2. Unzip the Kaggle files 
+2. Unzip the Kaggle files:
+   ```bash
    cd /data/cats_vs_dogs_small
    gzip -d train.zip validation.zip test.zip 
-3. Run the script
+4. Run the script:
+   ```bash
    $ python dld.py 
 
 ## Credits
