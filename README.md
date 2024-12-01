@@ -26,7 +26,7 @@ This simple GUI is created using Tkinter. It works fine with the following minim
 - Python 3.9
 - TensorFlow 2.10 (to be able to use CUDA 11.2 cuDNN 8.1 on Windows 10)
 - The script should also work on newer TensorFlow versions under Linux
-- At least 1.1 GB of free space
+- At least 1.1 GB of free dsik space and 16 GB of RAM
 
 ## Features
 
