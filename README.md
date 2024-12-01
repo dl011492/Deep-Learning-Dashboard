@@ -38,16 +38,23 @@ This simple GUI is created using Tkinter. It works fine with the following minim
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository using Git LFS to manage the large dataset files:
    ```bash
+   sudo apt update
+   sudo apt install git-lfs
+   git lfs install
    git clone https://github.com/dl011492/Deep-Learning-Dashboard.git
    cd Deep-Learning-Dashboard
 2. Unzip the Kaggle files:
    ```bash
    cd data/cats_vs_dogs_small
-   gunzip -xf train.zip validation.zip test.zip 
+   unzip -q train.zip
+   unzip -q validation.zip
+   unzip -q test.zip
+   rm *.zip 
 4. Run the script:
    ```bash
+   cd ..
    python dld.py 
 
 ## Credits
