@@ -4,7 +4,9 @@
 datasets like: MNIST, Fashion MNIST, Kaggle cats and dogs and Oxford-IIIT pets.
 It is designed to easily display samples of selected datasets, select a specific neural network model (MLP 512, CNN Small,
 CNN Medium with data augmentation, VGG16-DA, mini Xception, Segmenattion, sentiment analysis) monitor training and evaluate
-the results. The script is by no means complete. Feel free to try to finish it, implement new models and improve it.
+the results. The scripts are by no means complete. Feel free to try to finish them, implement new models and improve it.
+*Warning*: the datasets in this reprository are compresed but still large (1.2 GB). Be aawre of this when coloning or
+downloading files.
 
 ![Deep learning dashboard example 1](https://github.com/dl011492/Deep-Learning-Dashboard/blob/main/figures/dld_v02.png)
 
@@ -41,3 +43,4 @@ This simple GUI is created using Tkinter. It works fine with the following minni
 ## Credits
 Most of the deep learning examples were taken from the excellent book:
 Deep Learning with Python, 2nd Ed. Francois Chollet, Manning Publications Co. 2021.
+https:// www.manning.com/books/deep-learning-with-python-second-edition.
