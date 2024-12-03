@@ -24,7 +24,8 @@ in loading and pre-processing is achieved by accessing the provided ./data/pets/
 ## Requirements
 This simple GUI is created using Tkinter. It works fine with the following minimum requirements: 
 - Python 3.9
-- TensorFlow 2.10 (to be able to use [CUDA 11.2](https://developer.nvidia.com/cuda-11.2.0-download-archive) cuDNN 8.1 on Windows 10)
+- TensorFlow 2.10 (to be able to use [CUDA 11.2](https://developer.nvidia.com/cuda-11.2.0-download-archive)
+  [cuDNN 8.1](https://developer.nvidia.com/rdp/cudnn-archive) on Windows 10)
 - The script should also work on newer TensorFlow versions under Linux
 - At least 1.1 GB of free disk space and 16 GB of RAM
 
