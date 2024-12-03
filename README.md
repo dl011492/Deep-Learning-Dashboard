@@ -17,7 +17,7 @@ downloading files.
 MNIST and Fashion MNIST are already part of TensorFlow Keras and one should not have any problems using them.
 [Kaggle](https://www.kaggle.com/datasets/tongpython/cat-and-dog) is not the original dataset but a smaller dataset organized
 and made smaller according to the example described in Chollet's book, p. 212.  
-For the [Oxford-IIIT pets](www.robots.ox.ac.uk/~vgg/data/pets/) dataset, I used the book's example on p. 240. A minor speedup
+For the [Oxford-IIIT pets](https://www.robots.ox.ac.uk/~vgg/data/pets/) dataset, I used the book's example on p. 240. A minor speedup
 in loading and pre-processing is achieved by accessing the provided ./data/pets/oxford-IIIT_pets.npz file directly.
 
 ---
