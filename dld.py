@@ -59,7 +59,7 @@ else:
     ext = ".keras"
 
 shared_settings = {
-    "datasets" : ["MNIST", "Fashion MNIST", "Kaggle", "Oxford-IIIT", "imdb", "aclImdb"],
+    "datasets" : ["MNIST", "Fashion MNIST", "Kaggle", "Oxford-IIIT", "aclImdb", "imdb"],
     "models" : ["MLP-512", "MLP-2L-96", "MLP-128-Dropout", "CNN Small",
                 "CNN Medium-DA", "VGG16-DA", "mini Xception",
                 "Segmentation",

@@ -57,8 +57,17 @@ class LossDiagApp(ttk.Frame):
             print(f"Selected model: {selected}")
             sel_model = selected
             self.model = md.Model(selected, self.shared_settings).get_model()
-            if selected != "MLP sent. analysis":
-                self.model.summary()
+            # Some models have problems with .summary()
+            # TF 2.18
+            not_working_linux = ["VGG16-DA", "mini Xception", "2LSTM-wembd", "Transf Encoder"]
+            # TF 2.10
+            not_working_win = ["MLP sent. analysis"]
+            if shared_settings["os"] == "linux":
+                if sel_model not in not_working_linux:                    
+                    self.model.summary()
+            else:
+                if sel_model not in not_working_win:
+                    self.model.summary()
             shared_settings["duration"] = 0
             self.update_settings()
             self.plot_callback = PlotCallback(self.plotFrame,
@@ -262,11 +271,18 @@ class LossDiagApp(ttk.Frame):
         # Train the model
         start_time = time.time()
         if train_dataset is not None:
-            self.model.fit(vec_train_dataset,
-                           epochs = self.shared_settings["epochs"],
-                           batch_size = self.shared_settings["batch_size"],
-                           callbacks = callbacks,
-                           validation_data = vec_val_dataset,)
+            if dataset == "aclImdb":
+                self.model.fit(vec_train_dataset,
+                               epochs = self.shared_settings["epochs"],
+                               batch_size = self.shared_settings["batch_size"],
+                               callbacks = callbacks,
+                               validation_data = vec_val_dataset,)
+            else:
+                self.model.fit(train_dataset,
+                               epochs = self.shared_settings["epochs"],
+                               batch_size = self.shared_settings["batch_size"],
+                               callbacks = callbacks,
+                               validation_data = val_dataset,)                
         else:
             self.model.fit(train_data, train_labels,
                            epochs = self.shared_settings["epochs"],
