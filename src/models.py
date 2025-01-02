@@ -300,7 +300,7 @@ class Model:
 
             shared_settings["optimizer"] = "rmsprop"
             shared_settings["loss"] = "binary_crossentropy"
-            shared_settings["epochs"] = 1
+            shared_settings["epochs"] = 10
             shared_settings["batch_size"] = 32
 
         # bidirectional LSTM with word embedding and masking. DL with Python p. 333
@@ -316,7 +316,7 @@ class Model:
 
             shared_settings["optimizer"] = "rmsprop"
             shared_settings["loss"] = "binary_crossentropy"
-            shared_settings["epochs"] = 1
+            shared_settings["epochs"] = 10
             shared_settings["batch_size"] = 32
 
         # Transformer Encoder with positional embedding. DL with Python p. 348
@@ -340,7 +340,7 @@ class Model:
 
             shared_settings["optimizer"] = "rmsprop"
             shared_settings["loss"] = "binary_crossentropy"
-            shared_settings["epochs"] = 1
+            shared_settings["epochs"] = 20
             shared_settings["batch_size"] = 32
             
         # Compile the model
