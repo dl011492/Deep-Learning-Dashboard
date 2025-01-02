@@ -40,23 +40,26 @@ if os.name == "nt":
     os_type = "windows"
 if os.name == "posix":
     os_type = "linux"
+
+# Finding the TF version to set the keras model extension type
+tf_ver = int(tf.__version__.split('.')[1])
+print(f"TensorFlow Version: {tf_ver}")
+if int(tf.__version__.split('.')[1]) <= 14:   # *.keras format available for TF > 2.14
+    ext = ".h5"
+else:
+    ext = ".keras"
     
 # TensorFlow and CUDA versions
 version = f"TF version: {tf.__version__} without CUDA"
 if gpus:                                # Checking CUDA
     if os_type == "linux":
-        cuda_ver_pattern = re.compile(r'cuda-([\d.]+)') 
-        cuda_version = cuda_ver_pattern.findall(os.environ.get("LD_LIBRARY_PATH"))
-        version = f"TF version: {tf.__version__} with CUDA: {cuda_version[0]}"
+        #cuda_ver_pattern = re.compile(r'cuda-([\d.]+)')  
+        #cuda_version = cuda_ver_pattern.findall(os.environ.get("LD_LIBRARY_PATH"))
+        cuda_version = tf.sysconfig.get_build_info()["cuda_version"]
+        version = f"TF version: {tf.__version__} with CUDA: {cuda_version}"
     if os_type == "windows":
-        cuda_version = tf.sysconfig.get_build_info()["cuda_version"]    
+        cuda_version = tf.sysconfig.get_build_info()["cuda_version"]
         version = f"TF version: {tf.__version__} with CUDA: {cuda_version[-3:]}"
-
-# Finding the TF version to set the keras model extension type
-if int(tf.__version__.split('.')[1]) <= 12:   # *.keras format available for TF > 2.12
-    ext = ".h5"
-else:
-    ext = ".keras"
 
 shared_settings = {
     "datasets" : ["MNIST", "Fashion MNIST", "Kaggle", "Oxford-IIIT", "aclImdb", "imdb"],

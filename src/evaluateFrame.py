@@ -69,11 +69,11 @@ class EvaluateApp(tk.Frame):
                                               "PositionalEmbedding": PositionalEmbedding})
                     else:
                         model = tf.keras.models.load_model('./cache/aclImdb_model' + ext)
-
-                    #if test_dataset is not None:
-                    #test_loss, test_acc = model.evaluate(test_dataset)
                     test_loss, test_acc = model.evaluate(vec_test_dataset)
                     self.label.config(text = f"Test Accuracy: {100*test_acc:.1f}")
+            if test_dataset is not None:
+                test_loss, test_acc = model.evaluate(test_dataset)
+                self.label.config(text = f"Test Accuracy: {100*test_acc:.1f}")
             else:
                 test_loss, test_acc = model.evaluate(test_data, test_labels)           
                 self.label.config(text = f"Test Accuracy: {100*test_acc:.1f}")
