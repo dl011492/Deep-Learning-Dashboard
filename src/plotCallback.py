@@ -3,9 +3,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 import tensorflow as tf
 
-# Set the logger to display only errors or more critical messages
-#tf.get_logger().setLevel('ERROR')
-
 class PlotCallback(tf.keras.callbacks.Callback):
     def __init__(self, master_frame, epochs, max_loss):
         super(PlotCallback, self).__init__()

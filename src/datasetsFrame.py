@@ -1,14 +1,14 @@
+import time
 import random
-import tkinter as tk
+import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import tkinter as tk
+from tkinter import ttk
+import tensorflow as tf
 import src.dataset as ds
 import src.lossDiagFrame as ld
-import tensorflow as tf
-from tkinter import ttk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
-# Set the logger to display only errors or more critical messages
-#tf.get_logger().setLevel('ERROR')
+import src.textWinFrame as tw
 
 fg, bg = "white", "navy" 
 
@@ -29,7 +29,7 @@ class DatasetApp(tk.Frame):
 
         # ListBox for the available datasets
         self.listbox = tk.Listbox(self.dsFrame, fg = fg, bg = bg, height = 5)
-        datasets = ["MNIST", "Fashion MNIST", "Kaggle", "Oxford-IIIT", "imdb"]
+        datasets = self.shared_settings["datasets"]
         for dataset in datasets:
             self.listbox.insert(tk.END, dataset)
         self.listbox.pack(pady = 5)
@@ -64,32 +64,48 @@ class DatasetApp(tk.Frame):
             
             # Load the dataset using the Dataset class
             ds_obj = ds.Dataset(self.selected_item)
-            # Store the train and test data in the shared data structure            
-            if ds_obj.get_train_dataset() is not None:
-                self.shared_data['train_dataset'] = ds_obj.get_train_dataset()
-                self.shared_data['val_dataset'] = ds_obj.get_val_dataset()
-                self.shared_data['test_dataset'] = ds_obj.get_test_dataset()
-            
-            self.shared_data['train_data'], self.shared_data['train_labels'] = ds_obj.get_train_data()
-            self.shared_data['val_data'], self.shared_data['val_labels'] = ds_obj.get_val_data()            
-            self.shared_data['test_data'], self.shared_data['test_labels'] = ds_obj.get_test_data()
-            
-            self.shared_data['train_shape'], self.shared_data['train_dtype'] = ds_obj.get_train_info()
             self.shared_data['dataset'] = self.selected_item
 
-            self.lbl_t_samples.config(text = f"Training samples: {self.shared_data['train_shape'][0]}")
-            self.lbl_t_dtype.config(text = f"Train dtype: {self.shared_data['train_dtype']}")
+            # Setting the shared_data for each dataset
+
+            if self.selected_item == "MNIST" or self.selected_item == "Fashion MNIST" \
+               or self.selected_item == "Kaggle" or self.selected_item == "Oxford-IIIT" \
+               or self.selected_item == "imdb":
+                self.shared_data['train_data'], self.shared_data['train_labels'] = ds_obj.get_train_data()
+                self.shared_data['val_data'], self.shared_data['val_labels'] = ds_obj.get_val_data()            
+                self.shared_data['test_data'], self.shared_data['test_labels'] = ds_obj.get_test_data()            
+                self.shared_data['train_shape'], self.shared_data['train_dtype'] = ds_obj.get_train_info()
 
             # Setting the models for each dataset
             if self.selected_item == "MNIST" or self.selected_item == "Fashion MNIST":
                 self.shared_settings["models"] = ["MLP-512", "MLP-2L-96", "MLP-128-Dropout", "CNN Small"]
+               
             if self.selected_item == "Kaggle":
                 self.shared_settings["models"] = ["CNN Medium-DA", "VGG16-DA", "mini Xception"]
+
+                self.shared_data['train_dataset'] = ds_obj.get_train_dataset()
+                self.shared_data['val_dataset'] = ds_obj.get_val_dataset()
+                self.shared_data['test_dataset'] = ds_obj.get_test_dataset()
+
             if self.selected_item == "Oxford-IIIT":
                 self.shared_settings["models"] = ["Segmentation"]
+                
             if self.selected_item == "imdb":
                 self.shared_settings["models"] = ["MLP sent. analysis"]
+                self.shared_data['train_w2i'], self.shared_data['train_i2w'] = ds_obj.get_vocabulary()
                 
+            if self.selected_item == "aclImdb":
+                self.shared_settings["models"] = ["bag-of-words 2g", "2LSTM-wembd", "Transf Encoder"]            
+     
+                self.shared_data['train_dataset'] = ds_obj.get_train_dataset()
+                self.shared_data['val_dataset'] = ds_obj.get_val_dataset()
+                self.shared_data['test_dataset'] = ds_obj.get_test_dataset()
+                self.shared_data['train_shape'], self.shared_data['train_dtype'] = ds_obj.get_train_dataset_info()
+            
+ 
+            self.lbl_t_samples.config(text = f"Training samples: {self.shared_data['train_shape'][0]}")
+            self.lbl_t_dtype.config(text = f"Train dtype: {self.shared_data['train_dtype']}")
+            
             # Instantiate the lossDiag framne to update the models settings
             lossFrame = ld.LossDiagApp(self.parent, self.shared_data, self.shared_settings)
 
@@ -100,17 +116,27 @@ class DatasetApp(tk.Frame):
         # Access the train data from the shared data
         train_data = self.shared_data.get('train_data')
         train_labels = self.shared_data.get('train_labels')
-       
+
+        # Access the train dataset from the shared data
+        train_dataset = self.shared_data.get('train_dataset')
+
+        #max_train = 32
+        #if train_dataset is None:             
+            #max_train = int(len(train_data))
+        
         if self.selected_item is None:
             self.label.config(text = "Please select a dataset")
         else:
-            max_train = int(len(train_data))
+            max_train = 32
+            if train_dataset is None:             
+                max_train = int(len(train_data))
+            #max_train = int(len(train_data))
             index = random.randint(0, max_train)
             if self.selected_item == "MNIST" or self.selected_item == "Fashion MNIST":  
                 train_image = tf.reshape(train_data[index,:], (28, 28))
                 self.generatePlot(train_image)
 
-            if self.selected_item == "Kaggle":  
+            if self.selected_item == "Kaggle":
                 train_image = tf.reshape(train_data[index,:], (180, 180, 3))
                 self.generateColorPlot(train_image)
 
@@ -119,7 +145,34 @@ class DatasetApp(tk.Frame):
                 self.generateColorPlot(train_image)
 
             if self.selected_item == "imdb":
-                print("Genearate imdb sample text")                
+                recovered_text = []
+                index_to_word = self.shared_data['train_i2w']
+                for row in train_data[index,:]:
+                    word_indices = np.where(row == 1)[0]
+                    words = [index_to_word.get(idx, "<UNK>") for idx in word_indices]
+                    recovered_text.append(words)
+                    
+                #print("de-vectorizing ...")
+                #def devectorize_seq(vectors):
+                    # Get the indices of the maximum value in each row
+                #    return [list(np.where(row == 1)[0]) for row in vectors]
+
+                #print(train_data[index,:].shape)
+                #print(train_data[index,:])
+                #train_seq = devectorize_seq(train_data[index,:])
+                #print(train_seq)  
+                #print(index_to_word)
+
+                #print(recovered_text)
+                print("Needs to be implemented")
+                
+                #textWin = tw.textWinApp(self.dsFrame, train_text, self.shared_data)
+                #textWin.wait_window()
+
+            if self.selected_item == "aclImdb":
+                sample_text = None
+                textWin = tw.textWinApp(self.dsFrame, sample_text, self.shared_data)
+                textWin.wait_window()
                 
     def generatePlot(self, image):
         fig = plt.figure(figsize = (0.5,0.5))

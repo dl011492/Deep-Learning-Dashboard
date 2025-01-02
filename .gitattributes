@@ -1,2 +1,5 @@
 *.zip filter=lfs diff=lfs merge=lfs -text
 *.npz filter=lfs diff=lfs merge=lfs -text
+*.data filter=lfs diff=lfs merge=lfs -text
+data/aclImdb filter=lfs diff=lfs merge=lfs -text
+data/pets filter=lfs diff=lfs merge=lfs -text

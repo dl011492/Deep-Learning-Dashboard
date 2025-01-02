@@ -49,9 +49,9 @@ class trainSettingsFrame(tk.Toplevel):
         # Getting the default index for the loss
         loss_key = next((k for k, v in losses_map.items() if v == self.shared_settings['loss']), None)
         if loss_key is not None:
-            loss_ind = losses.index(loss_key)  # Find the index of the loss key in the losses list
+            loss_ind = losses.index(loss_key)     # Find the index of the loss key in the losses list
         else:
-            loss_ind = 0  # Default to the first index if not found
+            loss_ind = 0                          # Default to the first index if not found
         
         loss_label = tk.Label(self, text = "Loss Function:")
         loss_label.grid(row = 0, column = 2, sticky = "w", padx = 10, pady = 5)

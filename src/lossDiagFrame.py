@@ -1,15 +1,13 @@
 import os
 import time
+import re
 import tkinter as tk
+from tkinter import ttk
+import tensorflow as tf
+from src.plotCallback import PlotCallback
 import src.trainSettingsFrame as ts
 import src.modelParamsFrame as mp
 import src.models as md
-from tkinter import ttk
-from src.plotCallback import PlotCallback
-import tensorflow as tf
-
-# Set the logger to display only errors or more critical messages
-#tf.get_logger().setLevel('ERROR')
 
 fg, bg = "black", "lightgrey"
 
@@ -20,11 +18,13 @@ class LossDiagApp(ttk.Frame):
         super().__init__(parent)
         self.shared_data = shared_data
         self.shared_settings = shared_settings
+        self.sel_model = ""
 
         if self.shared_settings["epochs"] != "":            
             max_epochs = self.shared_settings["epochs"]
         else:
             max_epochs = 20 
+
         max_loss = 1.0
 
         # Frame creation and title
@@ -45,9 +45,9 @@ class LossDiagApp(ttk.Frame):
 
         # Menus and buttons
         btn_width = 16
-        if os.name == "nt":
+        if shared_settings["os"] == "windows":
             btn_width = 20
-        # Menu for models        
+        # Option menu for models        
         placeholder = "Models"            
         self.sel_model = tk.StringVar(value = placeholder)
         options = self.shared_settings["models"]
@@ -55,6 +55,7 @@ class LossDiagApp(ttk.Frame):
         def on_selected_model(*args):
             selected = self.sel_model.get()
             print(f"Selected model: {selected}")
+            sel_model = selected
             self.model = md.Model(selected, self.shared_settings).get_model()
             if selected != "MLP sent. analysis":
                 self.model.summary()
@@ -66,8 +67,8 @@ class LossDiagApp(ttk.Frame):
                    
         self.models_menu = tk.OptionMenu(self.lossDiagFrame, self.sel_model, *options)
         self.models_menu.config(width = btn_width - 1)
-        if os.name == "nt":
-            self.models_menu.config(width = 16)
+        if shared_settings["os"] == "windows":
+            self.models_menu.config(width = 16)            
         self.models_menu.place(x = 500, y = 550)
         self.sel_model.trace("w", on_selected_model)
 
@@ -161,25 +162,89 @@ class LossDiagApp(ttk.Frame):
         # Access the train and validation datasets from the shared data
         train_dataset = self.shared_data.get("train_dataset")
         val_dataset = self.shared_data.get("val_dataset")    
+        test_dataset = self.shared_data.get("test_dataset") 
 
         # Update the status in shared_settings                                  
         self.shared_settings['status'] = "...running....."
         self.update_settings()
+
+        # Text vectorization for bag of words, 2LSTM-wembed or Tranf Encoder
+        if dataset == "aclImdb":
+        #if self.sel_model.get() == "bag-of-words 2g" \
+        #           or self.sel_model.get() == "2LSTM-wembd" \
+        #           or self.sel_model.get() == "Transf Encoder":
+            #max_tokens = 10000   # with 20000 the get_vocab() method does not work!            
+            #max_length = 600
+            max_tokens = self.shared_settings.get("max_tokens")
+            seq_length = self.shared_settings.get("seq_length")
+            
+            print(f"Loss Diagram Frame, Model {self.sel_model.get()} selected")
+            start_vec = time.time()
+
+            if self.sel_model.get() == "bag-of-words 2g":
+                text_vectorization = tf.keras.layers.TextVectorization(
+                    ngrams = 2,
+                    max_tokens = max_tokens,
+                    output_mode = "multi_hot")
+            
+            if self.sel_model.get() == "2LSTM-wembd" or self.sel_model.get() == "Transf Encoder":
+                text_vectorization = tf.keras.layers.TextVectorization(
+                    max_tokens = max_tokens,
+                    output_mode = "int",
+                    output_sequence_length = seq_length)
+                    
+            print("Building the vocabulary ....")
+            start_voc = time.time()
+          
+            if self.shared_settings["os"] == "linux":
+                def replace_en_dash(text):                # removing "-" characters
+                    return tf.strings.regex_replace(text, '\u2013', '-')             
+                text_only_train_ds = train_dataset.map(lambda x, y: x)
+                text_only_train_ds = text_only_train_ds.map(replace_en_dash)
+            text_only_train_ds = train_dataset.map(lambda x, y: x)
+            text_vectorization.adapt(text_only_train_ds)
+
+            # Getting the vocabulary and storing it to not compute it again
+            vocab = text_vectorization.get_vocabulary()
+            end_voc = time.time()
+            print(f"Vocabulary time: {(end_voc - start_voc):.1f} s")
+            self.shared_data["vocab"] = vocab
+            self.shared_settings["model"] = self.sel_model.get()
+            
+            # Vectorization 
+            start_vec = time.time()
+            vec_train_dataset = train_dataset.map(
+                lambda x, y: (text_vectorization(x), y))
+            
+            vec_val_dataset = val_dataset.map(
+                lambda x, y: (text_vectorization(x), y))
+            
+            vec_test_dataset = test_dataset.map(
+                lambda x, y: (text_vectorization(x), y))
+            
+            end_vec = time.time()
+            print(f"Vectorization time: {(end_vec - start_vec):.1f} s")
+
+            # Passing vectorized test dataset to evaluate the model and make predictions
+            self.shared_data['test_dataset'] = test_dataset
+            self.shared_data["vec_test_dataset"] = vec_test_dataset
 
         # Define callbacks
         if dataset == "MNIST":
             dataset_name = "mnist"
         elif dataset == "Fashion MNIST":
             dataset_name = "fashion_mnist"
-        elif dataset == "imdb":
-            dataset_name = "imdb"
         elif dataset == "Kaggle":
             dataset_name = "kaggle"
         elif dataset == "Oxford-IIIT":
-            dataset_name = "oxford" 
+            dataset_name = "oxford"
+        elif dataset == "imdb":
+            dataset_name = "imdb"
+        elif dataset == "aclImdb":
+            dataset_name = "aclImdb"            
         else:
             dataset_name = "unknown"
-        filepath = f"./cache/{dataset_name}_model.h5"
+        filepath = f"./cache/{dataset_name}_model{self.shared_settings['extension']}"
         
         checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
                                     filepath = filepath,  
@@ -197,11 +262,11 @@ class LossDiagApp(ttk.Frame):
         # Train the model
         start_time = time.time()
         if train_dataset is not None:
-            self.model.fit(train_dataset,
+            self.model.fit(vec_train_dataset,
                            epochs = self.shared_settings["epochs"],
                            batch_size = self.shared_settings["batch_size"],
                            callbacks = callbacks,
-                           validation_data = val_dataset,)
+                           validation_data = vec_val_dataset,)
         else:
             self.model.fit(train_data, train_labels,
                            epochs = self.shared_settings["epochs"],

@@ -1,16 +1,15 @@
 import sys
 import tkinter as tk
 import tensorflow as tf
-
-# Set the logger to display only errors or more critical messages
-#tf.get_logger().setLevel('ERROR')
+from src.models import TransformerEncoder, PositionalEmbedding
 
 fg, bg = "white", "navy"
 
 class EvaluateApp(tk.Frame):
-    def __init__(self, parent, shared_data):
+    def __init__(self, parent, shared_data, shared_settings):
         super().__init__(parent)
         self.shared_data = shared_data
+        self.shared_settings = shared_settings
         
         self.evalFrame = tk.Frame(parent, bg = bg, width = 250, height = 300)
         self.evalFrame.pack_propagate(False)
@@ -38,33 +37,47 @@ class EvaluateApp(tk.Frame):
         # Access the test data and labels from the shared data
         test_data = self.shared_data.get("test_data")
         test_labels = self.shared_data.get("test_labels")
-
+        
         # Access the test datasets from the shared data
         test_dataset = self.shared_data.get("test_dataset")
+        vec_test_dataset = self.shared_data.get("vec_test_dataset")
         
         dataset = self.shared_data.get("dataset")        
-        if test_data is None:
+        if test_data is None and test_dataset is None:
             self.label.config(text = "Please select a dataset")
         else:
             # Load the pre-trained model
+            ext = self.shared_settings['extension']
             if dataset == "MNIST":
-                model = tf.keras.models.load_model('./cache/mnist_model.h5')
+                model = tf.keras.models.load_model('./cache/mnist_model' + ext)
             if dataset == "Fashion MNIST":
-                model = tf.keras.models.load_model('./cache/fashion_mnist_model.h5')
+                model = tf.keras.models.load_model('./cache/fashion_mnist_model' + ext)
             if dataset == "Kaggle":
-                model = tf.keras.models.load_model('./cache/kaggle_model.h5')
+                model = tf.keras.models.load_model('./cache/kaggle_model' + ext)
             if dataset == "Oxford-IIIT":
-                model = tf.keras.models.load_model('./cache/oxford_model.h5')                
+                model = tf.keras.models.load_model('./cache/oxford_model' + ext)                
             if dataset == "imdb":
-                model = tf.keras.models.load_model('./cache/imdb_model.h5')
+                model = tf.keras.models.load_model('./cache/imdb_model' + ext)
+            if dataset == "aclImdb":
+                if vec_test_dataset is None:
+                    self.label.config(text = "Please train a model")                
+                else:
+                    if self.shared_settings["model"] == "Transf Encoder":
+                        model = tf.keras.models.load_model(
+                            './cache/aclImdb_model' + ext,
+                            custom_objects = {"TransformerEncoder": TransformerEncoder,
+                                              "PositionalEmbedding": PositionalEmbedding})
+                    else:
+                        model = tf.keras.models.load_model('./cache/aclImdb_model' + ext)
 
-            if test_dataset is not None:
-                test_loss, test_acc = model.evaluate(test_dataset)
+                    #if test_dataset is not None:
+                    #test_loss, test_acc = model.evaluate(test_dataset)
+                    test_loss, test_acc = model.evaluate(vec_test_dataset)
+                    self.label.config(text = f"Test Accuracy: {100*test_acc:.1f}")
             else:
-                test_loss, test_acc = model.evaluate(test_data, test_labels)
+                test_loss, test_acc = model.evaluate(test_data, test_labels)           
+                self.label.config(text = f"Test Accuracy: {100*test_acc:.1f}")
             
-            self.label.config(text = f"Test Accuracy: {100*test_acc:.1f}")
-
     def quit_app(self):
         # Shutting down TensorFlow properly
         tf.keras.backend.clear_session()
