@@ -50,7 +50,7 @@ All the models are taken from F. Chollet's book (see Credits).
    sudo apt install git-lfs
    git lfs install
    git clone https://github.com/dl011492/Deep-Learning-Dashboard.git
-   mv Deep-Learning-Dashboard dld_v11
+   mv Deep-Learning-Dashboard dld_v11 
 
 2. Unzip Kaggle files:
    ```bash
@@ -71,7 +71,7 @@ All the models are taken from F. Chollet's book (see Credits).
 4. Place the data directory at the right position:
  ```bash
  mv data ..
- cd ../..
+ cd ../.. 
  
 5. Run the script:
    ```bash
