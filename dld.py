@@ -31,7 +31,7 @@ if gpus:
 # Setup GUI 
 sw_version = os.getcwd()[-2:]
 root = tk.Tk()
-root.title(f"Deep Learning Dashboard v. {sw_version}")
+root.title(f"Deep Learning Dashboard v.{sw_version}")
 root.minsize(1200, 800)
 root.option_add("*Font", "Tahoma 11")   # Global font style and size for Windows10
 
@@ -43,7 +43,6 @@ if os.name == "posix":
 
 # Finding the TF version to set the keras model extension type
 tf_ver = int(tf.__version__.split('.')[1])
-print(f"TensorFlow Version: {tf_ver}")
 if int(tf.__version__.split('.')[1]) <= 14:   # *.keras format available for TF > 2.14
     ext = ".h5"
 else:
@@ -76,7 +75,7 @@ shared_settings = {
     "epochs" : "",
     "batch_size" : "",
     "validation_split" : "",
-    "max_tokens" : 10000,
+    "max_tokens" : 7500,
     "seq_length" : 600,
     "status" : "idle",
     "duration" : "",

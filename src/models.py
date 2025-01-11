@@ -36,29 +36,32 @@ class TransformerEncoder(tf.keras.layers.Layer):
         })
         return config
 
+class CustomMaskLayer(tf.keras.layers.Layer):
+    def call(self, inputs):
+        return tf.math.not_equal(inputs, 0)
 
 class PositionalEmbedding(tf.keras.layers.Layer):
     def __init__(self, sequence_length, input_dim, output_dim, **kwargs):
         super().__init__(**kwargs)
         self.token_embeddings = tf.keras.layers.Embedding(
-            input_dim=input_dim, output_dim=output_dim)
+            input_dim = input_dim, output_dim = output_dim)
         self.position_embeddings = tf.keras.layers.Embedding(
-            input_dim=sequence_length, output_dim=output_dim)
+            input_dim = sequence_length, output_dim = output_dim)
         self.sequence_length = sequence_length
         self.input_dim = input_dim
         self.output_dim = output_dim
+        self.custom_mask_layer = CustomMaskLayer()
 
     def call(self, inputs):
         length = tf.shape(inputs)[-1]
-        positions = tf.range(start=0, limit=length, delta=1)
+        positions = tf.range(start = 0, limit = length, delta = 1)
         embedded_tokens = self.token_embeddings(inputs)
         embedded_positions = self.position_embeddings(positions)
         return embedded_tokens + embedded_positions
 
-    def compute_mask(self, inputs, mask = None):
-        #return tf.math.not_equal(inputs, 0)
-        return tf.keras.layers.Lambda(lambda x: tf.math.not_equal(x, 0))(inputs)   # new for TF-2.18
-
+    def compute_mask(self, inputs, mask=None):
+        return self.custom_mask_layer(inputs)
+    
     def get_config(self):
         config = super().get_config()
         config.update({
@@ -69,7 +72,6 @@ class PositionalEmbedding(tf.keras.layers.Layer):
         return config
 
 # Several model layer configurations
-
 sent_cfg = {0: {'type': 'Dense', 'neurons':  16, 'activation': 'relu'},   # not working (not Sequential)
             1: {'type': 'Dense', 'neurons':  16, 'activation': 'relu'},
             2: {'type': 'Dense', 'neurons':   1, 'activation': 'sigmoid'}}
@@ -204,7 +206,7 @@ class Model:
             shared_settings["optimizer"] = "rmsprop"
             shared_settings["loss"] = "binary_crossentropy"
             shared_settings["epochs"] = 50
-            shared_settings["batch_size"] = 32     # not needed. Just to disply it on the main window
+            shared_settings["batch_size"] = 32     # not needed. Just to display it on the main window
 
         # mini Xception like model. DL with Ptyhon p. 259
         elif model_name == "mini Xception":
@@ -250,7 +252,6 @@ class Model:
         # Segmentation. DL with Ptyhon p. 244
         elif model_name == "Segmentation":
             inputs = tf.keras.Input(shape = (200, 200) + (3,))
-            #x = tf.keras.layers.Rescaling(1./255)(inputs)
             x = tf.keras.layers.Conv2D(64, 3, strides = 2, activation = "relu",
                                        padding = "same")(inputs)
             x = tf.keras.layers.Conv2D(64, 3, activation = "relu", padding = "same")(x)
@@ -291,7 +292,6 @@ class Model:
 
         # bag of words with bigrams. DL with Python p. 323
         elif model_name == "bag-of-words 2g":            
-            #max_tokens = 10000
             inputs = tf.keras.Input(shape = (max_tokens,))
             x = tf.keras.layers.Dense(16, activation = "relu")(inputs)
             x = tf.keras.layers.Dropout(0.5)(x)
@@ -305,7 +305,6 @@ class Model:
 
         # bidirectional LSTM with word embedding and masking. DL with Python p. 333
         elif model_name == "2LSTM-wembd":
-            #max_tokens = 10000
             inputs = tf.keras.Input(shape = (None,), dtype = "int64")
             embedded = tf.keras.layers.Embedding(
                 input_dim = max_tokens, output_dim = 256, mask_zero = True)(inputs)
@@ -322,9 +321,7 @@ class Model:
         # Transformer Encoder with positional embedding. DL with Python p. 348
         elif model_name == "Transf Encoder":                
             # Model parameters
-            #vocab_size = 10000
             vocab_size = max_tokens
-            #sequence_length = 600
             sequence_length = seq_length
             embed_dim = 256
             num_heads = 2

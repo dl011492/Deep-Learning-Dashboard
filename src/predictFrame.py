@@ -17,7 +17,7 @@ class PredictApp(tk.Frame):
         self.shared_data = shared_data
         self.shared_settings = shared_settings
         
-        self.predictFrame = tk.Frame(parent, bg = bg, width = 250, height = 500)
+        self.predictFrame = tk.Frame(parent, bg = bg, width = 250, height = 500, name = "predictFrame")
         self.predictFrame.pack_propagate(False)
         self.predictFrame.grid(row = 1, column = 2, rowspan = 2, sticky = "nsew")
 
@@ -44,7 +44,6 @@ class PredictApp(tk.Frame):
         test_labels = self.shared_data.get('test_labels')
         
         # Access the test datasets from the shared data
-        #train_dataset = self.shared_data.get('train_dataset')   # needed for vocabularies
         test_dataset = self.shared_data.get('test_dataset')
         
         dataset = self.shared_data.get('dataset')
@@ -54,7 +53,7 @@ class PredictApp(tk.Frame):
             ext = self.shared_settings['extension']
             if test_data is not None:
                 max_test = int(len(test_data))
-                index = random.randint(0, max_test)
+                index = random.randint(0, max_test)                
             if dataset == "MNIST":
                 # Select a test sample
                 test_image = tf.reshape(test_data[index,:], (28, 28))
@@ -71,7 +70,7 @@ class PredictApp(tk.Frame):
                 # Display the test label               
                 self.lbl_label.config(text = f"Test Sample Label: {test_labels[index]}")
                          
-            if dataset == "Fashion MNIST":
+            elif dataset == "Fashion MNIST":
                 # Select a test sample
                 test_image = tf.reshape(test_data[index,:], (28, 28))
                 self.generatePlot(test_image)
@@ -89,7 +88,7 @@ class PredictApp(tk.Frame):
                 test_ind = test_labels[index]
                 self.lbl_label.config(text = f"Test Sample Label: {class_names[test_ind]}")
                 
-            if dataset == "Kaggle":
+            elif dataset == "Kaggle":
                 class_names = ['cat', 'dog']
                 # Select first test image from the batch and expand dims to simulate a batch of 1 image
                 for i, element in enumerate(test_dataset):
@@ -110,7 +109,7 @@ class PredictApp(tk.Frame):
                 ind = test_labels[0]
                 self.lbl_label.config(text = f"Test Sample Label: {class_names[ind]}")
 
-            if dataset == "Oxford-IIIT":
+            elif dataset == "Oxford-IIIT":
                 # Select a random test sample and plot it
                 test_data = self.shared_data.get('val_data')
                 index = random.randint(0, int(len(test_data)))
@@ -124,10 +123,44 @@ class PredictApp(tk.Frame):
                 mask_reshaped *= 127
                 self.generateColorPlot(mask_reshaped)
                 
-            if dataset == "imdb":
-                print("Genearate imdb sample text")
+            elif dataset == "imdb":
+                # Select a random test sample
+                test_text, test_label = test_data[index], test_labels[index] 
+                
+                # Encoding integer sequences via multi-hot encoding for imdb
+                voc = self.shared_settings["max_tokens"]    # vocabulary size
 
-            if dataset == "aclImdb":
+                def vectorize_seq(seqs, dim=voc):
+                    if isinstance(seqs[0], int):  # Check if it's a single sequence
+                        seqs = [seqs]             # Wrap it in a list to make it a batch
+
+                    results = np.zeros((len(seqs), dim))
+                    for i, seq in enumerate(seqs):
+                        for idx in seq:
+                            if idx < dim:         # Ensure indices fit within the vocabulary size
+                                results[i, idx] = 1.
+                            else:
+                                print(f"Warning: Index {idx} out of bounds for vocabulary size {dim}.")
+                    return results
+    
+                test_henc = vectorize_seq(test_text, dim=voc)                
+                
+                # Make a prediction
+                model = tf.keras.models.load_model('./cache/imdb_model' + ext)
+                class_names = ['negative', 'positive']
+                y_proba = model.predict(test_henc, verbose = 0)
+                pred_index = (y_proba[0][0] >= 0.5).astype(int)
+                self.lbl_pred.config(text = f"Predicted Value: {class_names[pred_index]}")
+                
+                # Display the test label
+                test_ind = test_label
+                self.lbl_label.config(text = f"Test Sample Label: {class_names[test_ind]}")
+
+                # Display the test review
+                textWin = tw.textWinApp(self.predictFrame, test_text, self.shared_data)
+                textWin.wait_window()
+                    
+            elif dataset == "aclImdb":
                 if self.shared_settings["model"] == "Transf Encoder":
                     model = tf.keras.models.load_model(
                         './cache/aclImdb_model' + ext,
@@ -135,21 +168,18 @@ class PredictApp(tk.Frame):
                                           "PositionalEmbedding": PositionalEmbedding})
                 else:
                     model = tf.keras.models.load_model('./cache/aclImdb_model' + ext)
-                #max_tokens = 10000
-                #seq_length = 600
                 max_tokens = self.shared_settings["max_tokens"]
                 seq_length = self.shared_settings["seq_length"]
 
                 # Using the training vocabulary
                 if self.shared_settings["model"] == "bag-of-words 2g":
-                    #max_tokens = 20000
                     text_vectorization = tf.keras.layers.TextVectorization(
                         ngrams = 2,
                         max_tokens = max_tokens,
                         output_mode = "multi_hot",
                         vocabulary = self.shared_data["vocab"])
                     
-                if self.shared_settings["model"] == "2LSTM-wembd" or self.shared_settings["model"] == "Transf Encoder":
+                elif self.shared_settings["model"] == "2LSTM-wembd" or self.shared_settings["model"] == "Transf Encoder":
                     text_vectorization = tf.keras.layers.TextVectorization(
                         max_tokens = max_tokens,
                         output_mode = "int",

@@ -50,15 +50,22 @@ class EvaluateApp(tk.Frame):
             ext = self.shared_settings['extension']
             if dataset == "MNIST":
                 model = tf.keras.models.load_model('./cache/mnist_model' + ext)
-            if dataset == "Fashion MNIST":
+                test_loss, test_acc = model.evaluate(test_data, test_labels)                          
+            elif dataset == "Fashion MNIST":
                 model = tf.keras.models.load_model('./cache/fashion_mnist_model' + ext)
-            if dataset == "Kaggle":
+                test_loss, test_acc = model.evaluate(test_data, test_labels)                       
+            elif dataset == "Kaggle":
                 model = tf.keras.models.load_model('./cache/kaggle_model' + ext)
-            if dataset == "Oxford-IIIT":
-                model = tf.keras.models.load_model('./cache/oxford_model' + ext)                
-            if dataset == "imdb":
+                test_loss, test_acc = model.evaluate(test_dataset)
+            elif dataset == "Oxford-IIIT":
+                model = tf.keras.models.load_model('./cache/oxford_model' + ext)
+                test_loss, test_acc = model.evaluate(test_data, test_labels)           
+            elif dataset == "imdb":
+                test_henc_data = self.shared_data['test_henc_data']
+                test_henc_labels = self.shared_data['test_henc_labels']                
                 model = tf.keras.models.load_model('./cache/imdb_model' + ext)
-            if dataset == "aclImdb":
+                test_loss, test_acc = model.evaluate(test_henc_data, test_henc_labels)           
+            elif dataset == "aclImdb":
                 if vec_test_dataset is None:
                     self.label.config(text = "Please train a model")                
                 else:
@@ -70,13 +77,8 @@ class EvaluateApp(tk.Frame):
                     else:
                         model = tf.keras.models.load_model('./cache/aclImdb_model' + ext)
                     test_loss, test_acc = model.evaluate(vec_test_dataset)
-                    self.label.config(text = f"Test Accuracy: {100*test_acc:.1f}")
-            if test_dataset is not None:
-                test_loss, test_acc = model.evaluate(test_dataset)
-                self.label.config(text = f"Test Accuracy: {100*test_acc:.1f}")
-            else:
-                test_loss, test_acc = model.evaluate(test_data, test_labels)           
-                self.label.config(text = f"Test Accuracy: {100*test_acc:.1f}")
+                    
+            self.label.config(text = f"Test Accuracy: {100*test_acc:.1f}")
             
     def quit_app(self):
         # Shutting down TensorFlow properly

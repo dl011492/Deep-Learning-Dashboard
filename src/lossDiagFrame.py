@@ -1,6 +1,7 @@
 import os
 import time
 import re
+import numpy as np
 import tkinter as tk
 from tkinter import ttk
 import tensorflow as tf
@@ -57,10 +58,10 @@ class LossDiagApp(ttk.Frame):
             print(f"Selected model: {selected}")
             sel_model = selected
             self.model = md.Model(selected, self.shared_settings).get_model()
-            # Some models have problems with .summary()
-            # TF 2.18
+            # Some models have problems with model.summary()
+            # TF 2.18 Linux
             not_working_linux = ["VGG16-DA", "mini Xception", "2LSTM-wembd", "Transf Encoder"]
-            # TF 2.10
+            # TF 2.10 Windows
             not_working_win = ["MLP sent. analysis"]
             if shared_settings["os"] == "linux":
                 if sel_model not in not_working_linux:                    
@@ -167,7 +168,9 @@ class LossDiagApp(ttk.Frame):
         train_labels = self.shared_data.get("train_labels")
         val_data = self.shared_data.get("val_data")
         val_labels = self.shared_data.get("val_labels")
-
+        test_data = self.shared_data.get("test_data")
+        test_labels = self.shared_data.get("test_labels")
+        
         # Access the train and validation datasets from the shared data
         train_dataset = self.shared_data.get("train_dataset")
         val_dataset = self.shared_data.get("val_dataset")    
@@ -177,17 +180,32 @@ class LossDiagApp(ttk.Frame):
         self.shared_settings['status'] = "...running....."
         self.update_settings()
 
+        # Encoding integer sequences via multi-hot encoding for imdb
+        if dataset == "imdb":
+            voc = self.shared_settings["max_tokens"]        # vocabulary size            
+            def vectorize_seq(seqs, dim = voc):
+                results = np.zeros((len(seqs), dim))
+                for i, seq in enumerate(seqs):
+                    results[i, seq] = 1.
+                return results
+            
+            train_henc_data = vectorize_seq(train_data)
+            train_henc_labels = np.asarray(train_labels).astype("float32")
+            val_henc_data = vectorize_seq(val_data)
+            val_henc_labels = np.asarray(val_labels).astype("float32")            
+            test_henc_data = vectorize_seq(test_data)
+            test_henc_labels = np.asarray(test_labels).astype("float32")
+            
+            # Passing hot encoded test data to evaluate the model 
+            self.shared_data['test_henc_data'] = test_henc_data
+            self.shared_data['test_henc_labels'] = test_henc_labels
+
         # Text vectorization for bag of words, 2LSTM-wembed or Tranf Encoder
-        if dataset == "aclImdb":
-        #if self.sel_model.get() == "bag-of-words 2g" \
-        #           or self.sel_model.get() == "2LSTM-wembd" \
-        #           or self.sel_model.get() == "Transf Encoder":
-            #max_tokens = 10000   # with 20000 the get_vocab() method does not work!            
-            #max_length = 600
+        elif dataset == "aclImdb":
             max_tokens = self.shared_settings.get("max_tokens")
             seq_length = self.shared_settings.get("seq_length")
             
-            print(f"Loss Diagram Frame, Model {self.sel_model.get()} selected")
+            #print(f"Loss Diagram Frame, Model {self.sel_model.get()} selected")
             start_vec = time.time()
 
             if self.sel_model.get() == "bag-of-words 2g":
@@ -196,7 +214,7 @@ class LossDiagApp(ttk.Frame):
                     max_tokens = max_tokens,
                     output_mode = "multi_hot")
             
-            if self.sel_model.get() == "2LSTM-wembd" or self.sel_model.get() == "Transf Encoder":
+            elif self.sel_model.get() == "2LSTM-wembd" or self.sel_model.get() == "Transf Encoder":
                 text_vectorization = tf.keras.layers.TextVectorization(
                     max_tokens = max_tokens,
                     output_mode = "int",
@@ -251,8 +269,7 @@ class LossDiagApp(ttk.Frame):
             dataset_name = "imdb"
         elif dataset == "aclImdb":
             dataset_name = "aclImdb"            
-        else:
-            dataset_name = "unknown"
+
         filepath = f"./cache/{dataset_name}_model{self.shared_settings['extension']}"
         
         checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
@@ -270,7 +287,13 @@ class LossDiagApp(ttk.Frame):
             
         # Train the model
         start_time = time.time()
-        if train_dataset is not None:
+        if dataset == "imdb":
+            self.model.fit(train_henc_data, train_henc_labels,
+                           epochs = self.shared_settings["epochs"],
+                           batch_size = self.shared_settings["batch_size"],
+                           callbacks = callbacks,
+                           validation_data = (val_henc_data, val_henc_labels))             
+        elif train_dataset is not None:
             if dataset == "aclImdb":
                 self.model.fit(vec_train_dataset,
                                epochs = self.shared_settings["epochs"],
