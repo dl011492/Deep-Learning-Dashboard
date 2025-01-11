@@ -54,7 +54,7 @@ All the models are taken from F. Chollet's book (see Credits).
 
 2. Unzip Kaggle files:
    ```bash
-   cd data/cats_vs_dogs_small
+   cd dld_v11/data/cats_vs_dogs_small
    unzip -q train.zip
    unzip -q validation.zip
    unzip -q test.zip
@@ -62,7 +62,7 @@ All the models are taken from F. Chollet's book (see Credits).
 
 3. Unzip aclImdb files:
    ```bash
-   cd data/aclImdb
+   cd ../aclImdb
    unzip -q train.zip
    unzip -q validation.zip
    unzip -q test.zip  
@@ -70,15 +70,15 @@ All the models are taken from F. Chollet's book (see Credits).
 
 4. Place the data directory at the right position:
    ```bash
-   mv data ..
-   cd ../.. 
+   cd ../..
+   mv data .. 
  
 5. Run the script:
    ```bash
    cd dld_v11
    python dld.py 
 
-Eventually, you can rename the directory Deep-Learning-Dashboard to <name>_v01. In this way, the
+Eventually, you can rename the directory Deep-Learning-Dashboard to <name>_v11. In this way, the
 script will reflect your code version number in the Tkinter window.
 
 ## Credits
