@@ -69,9 +69,9 @@ All the models are taken from F. Chollet's book (see Credits).
    rm *.zip 
 
 4. Place the data directory at the right position:
- ```bash
- mv data ..
- cd ../.. 
+   ```bash
+   mv data ..
+   cd ../.. 
  
 5. Run the script:
    ```bash
