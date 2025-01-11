@@ -42,25 +42,40 @@ All the models are taken from F. Chollet's book (see Credits).
 
 ---
 
-## Installation
+## Installation Example for version 11
 
-1. Clone the repository using Git LFS to manage the large dataset files:
+1. Clone the repository using Git LFS to manage large dataset files:
    ```bash
    sudo apt update
    sudo apt install git-lfs
    git lfs install
    git clone https://github.com/dl011492/Deep-Learning-Dashboard.git
-   cd Deep-Learning-Dashboard
-2. Unzip the Kaggle files:
+   mv Deep-Learning-Dashboard dld_v11
+
+2. Unzip Kaggle files:
    ```bash
    cd data/cats_vs_dogs_small
    unzip -q train.zip
    unzip -q validation.zip
    unzip -q test.zip
    rm *.zip 
-4. Run the script:
+
+3. Unzip aclImdb files:
    ```bash
-   cd ../..
+   cd data/aclImdb
+   unzip -q train.zip
+   unzip -q validation.zip
+   unzip -q test.zip  
+   rm *.zip 
+
+4. Place the data directory at the right position:
+ ```bash
+ mv data ..
+ cd ../..
+ 
+5. Run the script:
+   ```bash
+   cd dld_v11
    python dld.py 
 
 Eventually, you can rename the directory Deep-Learning-Dashboard to <name>_v01. In this way, the
