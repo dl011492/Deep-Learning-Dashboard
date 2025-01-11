@@ -78,7 +78,7 @@ All the models are taken from F. Chollet's book (see Credits).
    cd dld_v11
    python dld.py 
 
-Eventually, you can rename the directory Deep-Learning-Dashboard to <name>_v11. In this way, the
+Eventually, you can rename the directory Deep-Learning-Dashboard to dld_v11. In this way, the
 script will reflect your code version number in the Tkinter window.
 
 ## Credits
