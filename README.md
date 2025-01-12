@@ -25,10 +25,12 @@ book's example on p.  320.
 ---
 
 ## Requirements
-This simple GUI is created using Tkinter. It has been tested under Windows 10 Pro, Win 10 IOT Enterprise, Win 11 Pro and Ubuntu 22.04.  
+This simple GUI is created using Tkinter.  
+It has been tested under Windows 10 Pro, Win 10 IOT Enterprise, Win 11 Pro and Ubuntu 22.04.  
 Unfortunately, TensorFlow 2.10 was the last TensorFlow release that supported GPU on native-Windows 
-[Install TensorFlow 2 with pip](https://www.tensorflow.org/install/pip#windows-native).     
-If one wants to use a newer TensorFlow version on a Windows system, one needs to install WSL2.  
+([Caution note](https://www.tensorflow.org/install/pip#windows-native)).     
+If one wants to use a newer TensorFlow version on a Windows system, one needs to install
+[WSL2](https://www.tensorflow.org/install/pip#windows-wsl2).  
  
 For a comprehensive list of tested systems and their corresponding CUDA and cuDNN dependencies, look in
 https://www.tensorflow.org/install/source#gpu.
@@ -54,7 +56,7 @@ All the models are taken from F. Chollet's book (see Credits).
 
 ## TensorFlow Installation
 For the Deep Learning Dashboard (DLD) script to work, you need a few other dependencies.  
-On Linux systems (even on a Raspberry Pi 5!), the latest TensorFlow (2.18) version and needed dependencies are very easy to install:
+On Linux systems (even on a Raspberry Pi 5!), the latest TensorFlow version, tf-2.18, and needed dependencies are very easy to install:
 
 ```bash
 sudo apt-get install python3-pil.imagetk
