@@ -24,6 +24,15 @@ book's example on p.  320.
 
 ---
 
+## Features
+All the models are taken from F. Chollet's book (see Credits).
+- **Models for computer vision**: MLP 512, MLP-2L-96, MLP-128-Dropout, CNN Small for the datasets MNIST and Fashion MNIST.
+- **Models for computer vision II**: CNN Medium-DA, VGG16-DA, mini Xception (Kaggle dataset), Segmentation (Oxford-IIIT).
+- **Models for sentiment analysis**: MLP sent. analysis (imdb), bag-of-words 2g, 2LSTM-wembd, Transf encoder (aclImdb).
+- **Model Training Tracking**: Monitor training progress with dynamic loss and accuracy diagrams.
+- **Data Visualization**: Analyze datasets and outputs using built-in graphing tools.
+- **Cross-Platform Compatibility**: Runs on both Windows and Linux systems.
+
 ## Requirements
 This simple GUI is created using Tkinter.  
 It has been tested under Windows 10 Pro, Win 10 IOT Enterprise, Win 11 Pro and Ubuntu 22.04.  
@@ -42,15 +51,6 @@ Tested systems:
 
 Other requirements:
 - At least 3.0 GB of free disk space and 16 GB of RAM
-
-## Features
-All the models are taken from F. Chollet's book (see Credits).
-- **Models for computer vision**: MLP 512, MLP-2L-96, MLP-128-Dropout, CNN Small for the datasets MNIST and Fashion MNIST.
-- **Models for computer vision II**: CNN Medium-DA, VGG16-DA, mini Xception (Kaggle dataset), Segmentation (Oxford-IIIT).
-- **Models for sentiment analysis**: MLP sent. analysis (imdb), bag-of-words 2g, 2LSTM-wembd, Transf encoder (aclImdb).
-- **Model Training Tracking**: Monitor training progress with dynamic loss and accuracy diagrams.
-- **Data Visualization**: Analyze datasets and outputs using built-in graphing tools.
-- **Cross-Platform Compatibility**: Runs on both Windows and Linux systems.
 
 ---
 
