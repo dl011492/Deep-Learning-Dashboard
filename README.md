@@ -50,7 +50,7 @@ On Linux systems (even on a Raspberry Pi 5!), the latest TensorFlow (2.18) versi
    pip install tensorflow
    pip install tqdm
 
----
+
 ## DLD Installation Example for version 11
 
 1. Clone the repository using Git LFS to manage large dataset files:
