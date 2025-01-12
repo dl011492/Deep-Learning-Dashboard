@@ -104,7 +104,7 @@ pip install tqdm
 Eventually, you can rename the directory Deep-Learning-Dashboard to dld_v11. In this way, the
 script will reflect your code version number in the Tkinter window.
 
-## Credits {#credits}
+## Credits
 Most of the deep learning models and how to obtain the Kaggle and Oxford-IIIT datasets were taken from
 the excellent book:
 [Deep Learning with Python, 2nd Ed. F. Chollet, Manning Publications Co. 2021](https://www.manning.com/books/deep-learning-with-python-second-edition).  
