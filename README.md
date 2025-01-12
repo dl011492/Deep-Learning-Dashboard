@@ -25,7 +25,7 @@ book's example on p.  320.
 ---
 
 ## Features
-All the models are taken from F. Chollet's book (see Credits).
+All the models are taken from F. Chollet's book (see [Credits](#credits)).
 - **Models for computer vision**: MLP 512, MLP-2L-96, MLP-128-Dropout, CNN Small for the datasets MNIST and Fashion MNIST.
 - **Models for computer vision II**: CNN Medium-DA, VGG16-DA, mini Xception (Kaggle dataset), Segmentation (Oxford-IIIT).
 - **Models for sentiment analysis**: MLP sent. analysis (imdb), bag-of-words 2g, 2LSTM-wembd, Transf encoder (aclImdb).
@@ -104,7 +104,7 @@ pip install tqdm
 Eventually, you can rename the directory Deep-Learning-Dashboard to dld_v11. In this way, the
 script will reflect your code version number in the Tkinter window.
 
-## Credits
+## Credits {#credits}
 Most of the deep learning models and how to obtain the Kaggle and Oxford-IIIT datasets were taken from
 the excellent book:
 [Deep Learning with Python, 2nd Ed. F. Chollet, Manning Publications Co. 2021](https://www.manning.com/books/deep-learning-with-python-second-edition).  
