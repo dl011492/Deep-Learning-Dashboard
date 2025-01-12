@@ -22,8 +22,6 @@ in loading and pre-processing is achieved by accessing the provided ./data/pets/
 For text models, I am using the data from A. Maas [aclImdb](https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz) from the
 book's example on p.  320.
 
----
-
 ## Features
 All the models are taken from F. Chollet's book (see [Credits](#credits)).
 - **Models for computer vision**: MLP 512, MLP-2L-96, MLP-128-Dropout, CNN Small for the datasets MNIST and Fashion MNIST.
@@ -32,6 +30,8 @@ All the models are taken from F. Chollet's book (see [Credits](#credits)).
 - **Model Training Tracking**: Monitor training progress with dynamic loss and accuracy diagrams.
 - **Data Visualization**: Analyze datasets and outputs using built-in graphing tools.
 - **Cross-Platform Compatibility**: Runs on both Windows and Linux systems.
+
+---
 
 ## Requirements
 This simple GUI is created using Tkinter.  
@@ -51,8 +51,6 @@ Tested systems:
 
 Other requirements:
 - At least 3.0 GB of free disk space and 16 GB of RAM
-
----
 
 ## TensorFlow Installation
 For the Deep Learning Dashboard (DLD) script to work, you need a few other dependencies.  
@@ -103,6 +101,8 @@ pip install tqdm
 
 Eventually, you can rename the directory Deep-Learning-Dashboard to dld_v11. In this way, the
 script will reflect your code version number in the Tkinter window.
+
+---
 
 ## Credits
 Most of the deep learning models and how to obtain the Kaggle and Oxford-IIIT datasets were taken from
