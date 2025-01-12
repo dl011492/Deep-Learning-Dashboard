@@ -25,12 +25,13 @@ book's example on p.  320.
 ---
 
 ## Requirements
-This simple GUI is created using Tkinter. It has been tested under Windows 10 Pro, Win 10 IOT, Win 11 and Ubuntu 22.04.  
-Unfortunately, TensorFlow 2.10 was the last TensorFlow release that supported GPU on native-Windows. If one wants to use a newer
-TensorFlow version on a Windows system, one needs to install WSL2.
-[Install TensorFlow 2 with pip](https://www.tensorflow.org/install/pip#windows-native)  
+This simple GUI is created using Tkinter. It has been tested under Windows 10 Pro, Win 10 IOT Enterprise, Win 11 Pro and Ubuntu 22.04.  
+Unfortunately, TensorFlow 2.10 was the last TensorFlow release that supported GPU on native-Windows 
+[Install TensorFlow 2 with pip](https://www.tensorflow.org/install/pip#windows-native).     
+If one wants to use a newer TensorFlow version on a Windows system, one needs to install WSL2.  
+ 
 For a comprehensive list of tested systems and their corresponding CUDA and cuDNN dependencies, look in
-(https://www.tensorflow.org/install/source#gpu)
+https://www.tensorflow.org/install/source#gpu.
 
 Tested systems:  
 - Windows 10: TensorFlow 2.10 with [CUDA 11.2](https://developer.nvidia.com/cuda-11.2.0-download-archive) and 
