@@ -41,17 +41,6 @@ All the models are taken from F. Chollet's book (see Credits).
 - **Cross-Platform Compatibility**: Runs on both Windows and Linux systems.
 
 ---
-## TensorFlow Installation
-
-For the Deep Learning Dashboard (DLD) script to work, you need a few other dependencies.  
-On Linux systems (even on a Raspberry Pi 5!), the latest TensorFlow (2.18) version and needed dependencies are very easy to install:
-
-```bash
-   sudo apt-get install python3-pil.imagetk
-   pip install matplotlib
-   pip install tensorflow
-   pip install tqdm
-
 ## DLD Installation Example for version 11
 
 1. Clone the repository using Git LFS to manage large dataset files:
