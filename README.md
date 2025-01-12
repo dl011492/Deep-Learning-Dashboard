@@ -25,11 +25,19 @@ book's example on p.  320.
 ---
 
 ## Requirements
-This simple GUI is created using Tkinter. It works fine with the following minimum requirements: 
-- Python >= 3.9
-- TensorFlow 2.10 (to be able to use [CUDA 11.2](https://developer.nvidia.com/cuda-11.2.0-download-archive)
-  [cuDNN 8.1](https://developer.nvidia.com/rdp/cudnn-archive) on Windows 10)
-- The script should also work on newer TensorFlow versions (e.g. 2.18) under Linux
+This simple GUI is created using Tkinter. It has been tested under Windows 10 Pro, Win 10 IOT, Win 11 and Ubuntu 22.04.  
+Unfortunately, TensorFlow 2.10 was the last TensorFlow release that supported GPU on native-Windows. If one wants to use a newer
+TensorFlow version on a Windows system, one needs to install WSL2.
+[Install TensorFlow 2 with pip](https://www.tensorflow.org/install/pip#windows-native)  
+For a comprehensive list of tested systems and their corresponding CUDA and cuDNN dependencies, look in
+(https://www.tensorflow.org/install/source#gpu)
+
+Tested systems:  
+- Windows 10: TensorFlow 2.10 with [CUDA 11.2](https://developer.nvidia.com/cuda-11.2.0-download-archive) and 
+  [cuDNN 8.1](https://developer.nvidia.com/rdp/cudnn-archive)
+- Ubuntu 22.04: TensorFlow 2.18 with GPU support. No separate CUDA or cuDNN installation needed
+
+Other requirements:
 - At least 3.0 GB of free disk space and 16 GB of RAM
 
 ## Features
