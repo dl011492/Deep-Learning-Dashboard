@@ -48,11 +48,11 @@ For the Deep Learning Dashboard (DLD) script to work, you need a few other depen
 On Linux systems (even on a Raspberry Pi 5!), the latest TensorFlow (2.18) version and needed dependencies are very easy to install:
 
 Copy and axecute the followingcommands:
-   ```bash
-   sudo apt-get install python3-pil.imagetk  
-   pip install matplotlib  
-   pip install tensorflow  
-   pip install tqdm  
+```bash
+sudo apt-get install python3-pil.imagetk  
+pip install matplotlib  
+pip install tensorflow  
+pip install tqdm  
 
 
 ## DLD Installation Example for version 11
